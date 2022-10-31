@@ -9,6 +9,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import javax.json.JsonObject;
+import javax.json.JsonValue;
 
 /**
  * Cocoa PODSPEC metadata.
@@ -164,6 +166,87 @@ public interface Podspec {
          */
         private static String clean(final String val) {
             return val.replaceAll("\\s*=?\\s*\\{?\\s*['\"]\\s*", "");
+        }
+    }
+
+    /**
+     * Podspec in json format.
+     * @since 0.1
+     */
+    final class Json implements Podspec {
+
+        /**
+         * Podspec data as json object.
+         */
+        private final JsonObject data;
+
+        /**
+         * Ctor.
+         * @param data Json podspec data
+         */
+        public Json(final JsonObject data) {
+            this.data = data;
+        }
+
+        @Override
+        public String name() {
+            return this.data.getString("name");
+        }
+
+        @Override
+        public String version() {
+            return this.data.getString("version");
+        }
+
+        @Override
+        public Map<String, Optional<String>> authors() {
+            final JsonValue val = this.data.get("authors");
+            final Map<String, Optional<String>> res = new HashMap<>(1);
+            if (val.getValueType() == JsonValue.ValueType.STRING) {
+                res.put(Json.removeQuotes(val), Optional.empty());
+            } else if (val.getValueType() == JsonValue.ValueType.ARRAY) {
+                val.asJsonArray()
+                    .forEach(item -> res.put(Json.removeQuotes(item), Optional.empty()));
+            } else {
+                val.asJsonObject().forEach(
+                    (key, value) -> res.put(key, Optional.of(Json.removeQuotes(value)))
+                );
+            }
+            return res;
+        }
+
+        @Override
+        public String license() {
+            return this.data.getString("license");
+        }
+
+        @Override
+        public URI homepage() {
+            return URI.create(this.data.getString("homepage"));
+        }
+
+        @Override
+        public Map<String, String> source() {
+            final Map<String, String> res = new HashMap<>();
+            this.data.getJsonObject("source").forEach(
+                (key, val) -> res.put(key, Json.removeQuotes(val))
+            );
+            return res;
+        }
+
+        @Override
+        public String summary() {
+            return this.data.getString("summary");
+        }
+
+        /**
+         * Method {@link JsonValue#toString()} do not removes value quotes, so
+         * we do it manually.
+         * @param val String json value
+         * @return The value without quotes
+         */
+        private static String removeQuotes(final JsonValue val) {
+            return val.toString().replaceAll("\"", "");
         }
     }
 }

@@ -68,7 +68,10 @@ SOFTWARE.
     <dependency>
       <groupId>javax.json</groupId>
       <artifactId>javax.json-api</artifactId>
-      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish</groupId>
+      <artifactId>javax.json</artifactId>
     </dependency>
     <dependency>
       <groupId>com.artipie</groupId>
@@ -136,6 +139,7 @@ SOFTWARE.
                 <exclude>duplicatefinder:.*</exclude>
                 <exclude>xml:/src/it/settings.xml</exclude>
                 <exclude>checkstyle:/src/test/resources-binary/.*</exclude>
+                <exclude>checkstyle:/src/test/resources/.*</exclude>
               </excludes>
             </configuration>
           </plugin>
