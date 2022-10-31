@@ -52,7 +52,7 @@ public interface Podspec {
     URI homepage();
 
     /**
-     * Packages course, type and value map. Check the
+     * Packages source, type and value map. Check the
      * <a href="https://guides.cocoapods.org/syntax/podspec.html#source">docs</a>
      * for more details about the format.
      * @return Map of the sources
