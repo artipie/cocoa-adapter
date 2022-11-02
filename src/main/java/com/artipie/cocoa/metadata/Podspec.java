@@ -4,13 +4,19 @@
  */
 package com.artipie.cocoa.metadata;
 
+import com.artipie.asto.misc.UncheckedIOScalar;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import javax.json.JsonException;
 import javax.json.JsonObject;
 import javax.json.JsonValue;
+import org.testng.reporters.Files;
 
 /**
  * Cocoa PODSPEC metadata.
@@ -66,6 +72,24 @@ public interface Podspec {
     String summary();
 
     /**
+     * Create {@link Podspec} instance from podspec file input stream.
+     * @param input Podspec file input stream
+     * @return Instance of {@link  Podspec}
+     * @throws IOException On error
+     */
+    @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
+    static Podspec initiate(final InputStream input) throws IOException {
+        final String data = Files.readFile(input);
+        Podspec res;
+        try {
+            res = new Json(javax.json.Json.createReader(new StringReader(data)).readObject());
+        } catch (final JsonException err) {
+            res = new Ruby(data);
+        }
+        return res;
+    }
+
+    /**
      * Podspec in ruby format.
      * @since 0.1
      */
@@ -82,6 +106,14 @@ public interface Podspec {
          */
         public Ruby(final String data) {
             this.data = data;
+        }
+
+        /**
+         * Ctor.
+         * @param input Input stream with ruby podspec
+         */
+        public Ruby(final InputStream input) {
+            this(new UncheckedIOScalar<>(() -> Files.readFile(input)).value());
         }
 
         @Override
@@ -186,6 +218,22 @@ public interface Podspec {
          */
         public Json(final JsonObject data) {
             this.data = data;
+        }
+
+        /**
+         * Ctor from spec string.
+         * @param data Json podspec string data
+         */
+        public Json(final String data) {
+            this(javax.json.Json.createReader(new StringReader(data)).readObject());
+        }
+
+        /**
+         * Ctor from spec input stream.
+         * @param data Json podspec input stream
+         */
+        public Json(final InputStream data) {
+            this(javax.json.Json.createReader(data).readObject());
         }
 
         @Override
