@@ -3,7 +3,6 @@
 [![Join our Telegramm group](https://img.shields.io/badge/Join%20us-Telegram-blue?&logo=telegram&?link=http://right&link=http://t.me/artipie)](http://t.me/artipie)
 
 [![EO principles respected here](https://www.elegantobjects.org/badge.svg)](https://www.elegantobjects.org)
-[![DevOps By Rultor.com](http://www.rultor.com/b/artipie/cocoa-adapter)](http://www.rultor.com/p/artipie/cocoa-adapter)
 [![We recommend IntelliJ IDEA](https://www.elegantobjects.org/intellij-idea.svg)](https://www.jetbrains.com/idea/)
 
 [![Javadoc](http://www.javadoc.io/badge/com.artipie/cocoa-adapter.svg)](http://www.javadoc.io/doc/com.artipie/cocoa-adapter)
@@ -11,7 +10,6 @@
 [![codecov](https://codecov.io/gh/artipie/cocoa-adapter/branch/master/graph/badge.svg)](https://codecov.io/gh/artipie/cocoa-adapter)
 [![Hits-of-Code](https://hitsofcode.com/github/artipie/cocoa-adapter)](https://hitsofcode.com/view/github/artipie/cocoa-adapter)
 [![Maven Central](https://img.shields.io/maven-central/v/com.artipie/cocoa-adapter.svg)](https://maven-badges.herokuapp.com/maven-central/com.artipie/cocoa-adapter)
-[![PDD status](http://www.0pdd.com/svg?name=artipie/cocoa-adapter)](http://www.0pdd.com/p?name=artipie/cocoa-adapter)
 
 This Java library turns your binary [ASTO](https://github.com/artipie/asto)
 storage (binary, Amazon S3 objects) into a CocoaPods repository. It provides [Cocoa PodSpec](https://cocoapods.org/) 
