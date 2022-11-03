@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +17,7 @@ import java.util.Optional;
 import javax.json.JsonException;
 import javax.json.JsonObject;
 import javax.json.JsonValue;
-import org.testng.reporters.Files;
+import org.apache.commons.io.IOUtils;
 
 /**
  * Cocoa PODSPEC metadata.
@@ -79,7 +80,7 @@ public interface Podspec {
      */
     @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
     static Podspec initiate(final InputStream input) throws IOException {
-        final String data = Files.readFile(input);
+        final String data = IOUtils.toString(input, StandardCharsets.UTF_8);
         Podspec res;
         try {
             res = new Json(javax.json.Json.createReader(new StringReader(data)).readObject());
@@ -113,7 +114,10 @@ public interface Podspec {
          * @param input Input stream with ruby podspec
          */
         public Ruby(final InputStream input) {
-            this(new UncheckedIOScalar<>(() -> Files.readFile(input)).value());
+            this(
+                new UncheckedIOScalar<>(() -> IOUtils.toString(input, StandardCharsets.UTF_8))
+                    .value()
+            );
         }
 
         @Override
